@@ -7,5 +7,5 @@ int main() {
   cout << "Hello World !!" << endl;
 
   getchar();
-	return 0;
+  return 0;
 }
