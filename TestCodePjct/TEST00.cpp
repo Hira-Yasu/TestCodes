@@ -10,7 +10,8 @@ void TEST00::now_days(){
   cout<<"日付を表示します。"<<endl;
 
   time_t now = time(NULL);
-  struct tm *pnow = localtime_s(pnow, &now);//エラー
+  struct tm *pnow;
+  localtime_s(pnow, &now);//エラー
   printf("%2d:%2d:%2d \n", pnow->tm_year+1900, pnow->tm_mon+1, pnow->tm_mday);
 
   cout
@@ -23,7 +24,8 @@ void TEST00::now_times(){
   cout<<"\n現在時刻を表示します。"<<endl;
 
   time_t now = time(NULL);
-  struct tm *pnow = localtime_s(pnow, &now);//同じくエラー
+  struct tm *pnow;
+  localtime_s(pnow, &now);//同じくエラー
   printf("%d:%d:%d\n", pnow->tm_hour, pnow->tm_min, pnow->tm_sec);
 
   cout
