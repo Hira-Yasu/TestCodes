@@ -26,9 +26,9 @@ void TEST01::OutputFile(){
 
   0x21(0x20) ~ 0x7E(0x7F) ACKIIのテキスト表示される文字
   int fseek(
-    FILE *stream,
-    long offset,
-    int whence
+  FILE *stream,
+  long offset,
+  int whence
   );
   int wherece に入る基準位置
   SEEK_SET	ファイルの始め
@@ -37,7 +37,7 @@ void TEST01::OutputFile(){
 
   ファイル位置表示子の値を返す、そのまま fseek() に入れることができる。
   long ftell(
-    FILE *stream 
+  FILE *stream
   );
   int i = 0xFFFFEEEE;
   fwrite(&i, sizeof(int), 1, fp);
@@ -46,8 +46,8 @@ void TEST01::OutputFile(){
   */
   FILE* fpa;
   FILE* fpb;
-  fopen_s(&fpa, "TestFile//Binary0.b", "wb");
-  fopen_s(&fpb, "TestFile//Binary1.b", "wb");
+  fopen_s(&fpa, "TestFile//Binary0.txt", "wb");
+  fopen_s(&fpb, "TestFile//Binary1.txt", "wb");
   char c = 0;
   int j;
   for(int i = 0; i<256; i++){
@@ -55,11 +55,15 @@ void TEST01::OutputFile(){
     c = (char)j;
     fwrite(&c, 1, 1, fpa);
     fwrite(&j, 1, 1, fpb);
+    //全く同じファイルが作られる。
+
     //fprintf(fpb, "%x", j);
-    
     //jに入力されている数字はcのバイナリと一致する、いあｍのところ反転はしていない
     //が、調べたところprintfでは無効文字は出力されない（書き込みすらされない）
   }
+  fprintf_s(fpa, "%d", ftell(fpa));
+  fprintf_s(fpb, "%d", ftell(fpb));
+
   fclose(fpa);
   fclose(fpb);
 

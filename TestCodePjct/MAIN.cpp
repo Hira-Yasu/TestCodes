@@ -16,12 +16,12 @@ void Destructor(){
 }
 
 int main() {
-  cout<<"Hello World"<<endl;
   Constructor();
+  cout<<"Hello World"<<endl;
 
   test01->OutputFile();
 
-  cout << "End Prcs" << endl;
+  cout<<"End Prcs"<<endl;
   getchar();
   Destructor();
   return 0;
