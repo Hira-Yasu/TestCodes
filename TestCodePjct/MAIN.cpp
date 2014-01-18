@@ -16,16 +16,12 @@ void Destructor(){
 }
 
 int main() {
-  cout << "Hello World !!" << endl;
+  cout<<"Hello World"<<endl;
   Constructor();
-
-  //test00.now_days();
-  //test00.now_times();
-
-  test00->CopyCode();
 
   test01->OutputFile();
 
+  cout << "End Prcs" << endl;
   getchar();
   Destructor();
   return 0;
