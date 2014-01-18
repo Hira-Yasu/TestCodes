@@ -48,6 +48,9 @@ void TEST01::OutputFile(){
   FILE* fpb;
   fopen_s(&fpa, "TestFile//Binary0.txt", "wb");
   fopen_s(&fpb, "TestFile//Binary1.txt", "wb");
+  //fprintf_s(fpa, "%d", ftell(fpa));//どちらも0が出力
+  //fprintf_s(fpb, "%d", ftell(fpb));//シーク位置は+1されている。
+
   char c = 0;
   int j;
   for(int i = 0; i<256; i++){
@@ -61,9 +64,12 @@ void TEST01::OutputFile(){
     //jに入力されている数字はcのバイナリと一致する、いあｍのところ反転はしていない
     //が、調べたところprintfでは無効文字は出力されない（書き込みすらされない）
   }
-  fprintf_s(fpa, "%d", ftell(fpa));
-  fprintf_s(fpb, "%d", ftell(fpb));
-  //肩に限らずシーク位置は同じ、fwriteで動く
+
+  //fprintf_s(fpa, "%d", ftell(fpa));
+  //fprintf_s(fpb, "%d", ftell(fpb));
+  //fwriteで動く
+  //これでも動いてる
+  //最後に出力した位置+1
 
 
   fclose(fpa);
