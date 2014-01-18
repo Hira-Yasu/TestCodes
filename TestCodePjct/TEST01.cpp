@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <iostream>
+
+using namespace std;
 
 int GetRandom(int min, int max){
   static int flag;
@@ -10,6 +13,47 @@ int GetRandom(int min, int max){
     flag = 1;
   }
   return min+(int)(rand()*(max-min+1.0)/(1.0+RAND_MAX));
+}
+
+void test00(){
+ FILE* fpa;
+  FILE* fpb;
+  fopen_s(&fpa, "TestFile//Binary0.txt", "wb");
+  fopen_s(&fpb, "TestFile//Binary1.txt", "wb");
+  //fprintf_s(fpa, "%d", ftell(fpa));//どちらも0が出力
+  //fprintf_s(fpb, "%d", ftell(fpb));//シーク位置は+1されている。
+
+  char c = 0;
+  int j;
+  for(int i = 0; i<256; i++){
+    j = GetRandom(0x00, 0xFF);
+    c = (char)j;
+    fwrite(&c, 1, 1, fpa);
+    fwrite(&j, 1, 1, fpb);
+    //全く同じファイルが作られる。
+
+    //fprintf(fpb, "%x", j);
+    //jに入力されている数字はcのバイナリと一致する、いあｍのところ反転はしていない
+    //が、調べたところprintfでは無効文字は出力されない（書き込みすらされない）
+  }
+
+  //fprintf_s(fpa, "%d", ftell(fpa));
+  //fprintf_s(fpb, "%d", ftell(fpb));
+  //fwriteで動く
+  //これでも動いてる
+  //最後に出力した位置+1
+
+
+  fclose(fpa);
+  fclose(fpb);
+}
+void test01(){
+  FILE *fpa;
+  fopen_s(&fpa, "TestFile//String00.txt", "w");
+  string str("abcdef");
+  fprintf_s(fpa, "%s", str);
+
+  fclose(fpa);
 }
 
 TEST01::TEST01(){}
@@ -44,36 +88,7 @@ void TEST01::OutputFile(){
   fread(&i, sizeof(int), 1, fp);
   fprintf_s(fp, "output test\n");
   */
-  FILE* fpa;
-  FILE* fpb;
-  fopen_s(&fpa, "TestFile//Binary0.txt", "wb");
-  fopen_s(&fpb, "TestFile//Binary1.txt", "wb");
-  //fprintf_s(fpa, "%d", ftell(fpa));//どちらも0が出力
-  //fprintf_s(fpb, "%d", ftell(fpb));//シーク位置は+1されている。
-
-  char c = 0;
-  int j;
-  for(int i = 0; i<256; i++){
-    j = GetRandom(0x00, 0xFF);
-    c = (char)j;
-    fwrite(&c, 1, 1, fpa);
-    fwrite(&j, 1, 1, fpb);
-    //全く同じファイルが作られる。
-
-    //fprintf(fpb, "%x", j);
-    //jに入力されている数字はcのバイナリと一致する、いあｍのところ反転はしていない
-    //が、調べたところprintfでは無効文字は出力されない（書き込みすらされない）
-  }
-
-  //fprintf_s(fpa, "%d", ftell(fpa));
-  //fprintf_s(fpb, "%d", ftell(fpb));
-  //fwriteで動く
-  //これでも動いてる
-  //最後に出力した位置+1
-
-
-  fclose(fpa);
-  fclose(fpb);
+ test01();
 
 }
 void TEST01::InputFile(){}
