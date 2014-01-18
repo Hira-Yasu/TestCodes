@@ -1,6 +1,5 @@
 #pragma once
-class TEST01
-{
+class TEST01{
 public:
   TEST01();
   ~TEST01();
