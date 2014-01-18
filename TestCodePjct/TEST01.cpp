@@ -17,29 +17,29 @@ TEST01::~TEST01(){}
 void TEST01::OutputFile(){
   /*
   Mode  動作                    ファイルがあるとき         ファイルがないとき
+
   "r"   読み出し専用            正常                       エラー（NULL返却）
   "r+"  読み込みと書き込み      正常                       エラー（NULL返却）
+
   "w"   書き込み専用            サイズを0にする（上書き）	 新規作成
   "w+"  書き込みと読み込み      サイズを0にする（上書き）	 新規作成
+
   "a"   追加書き込み専用        最後に追加する             新規作成
   "a+"  読み込みと追加書き込み  最後に追加する           	 新規作成
 
   0x21(0x20) ~ 0x7E(0x7F) ACKIIのテキスト表示される文字
-  int fseek(
-  FILE *stream,
-  long offset,
-  int whence
-  );
+
+  int fseek( FILE *stream, long offset, int whence );
+  バイナリモードとテキストモードで処理が違うらしいので注意
   int wherece に入る基準位置
   SEEK_SET	ファイルの始め
   SEEK_CUR	その時点のファイル位置表示子の値
   SEEK_END	ファイルの終わり
 
   ファイル位置表示子の値を返す、そのまま fseek() に入れることができる。
-  long ftell(
-  FILE *stream
-  );
-  int i = 0xFFFFEEEE;
+  long ftell( FILE *stream );
+
+  int i;
   fwrite(&i, sizeof(int), 1, fp);
   fread(&i, sizeof(int), 1, fp);
   fprintf_s(fp, "output test\n");
@@ -63,6 +63,8 @@ void TEST01::OutputFile(){
   }
   fprintf_s(fpa, "%d", ftell(fpa));
   fprintf_s(fpb, "%d", ftell(fpb));
+  //肩に限らずシーク位置は同じ、fwriteで動く
+
 
   fclose(fpa);
   fclose(fpb);
