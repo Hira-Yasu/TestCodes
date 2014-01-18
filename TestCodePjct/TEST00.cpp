@@ -39,33 +39,44 @@ void TEST00::CopyCode(){
   //MicrosoftDNからコピペ
 
   struct tm newtime;
-  char am_pm[] = "AM";
   __time64_t long_time;
+
+  char am_pm[] = "AM";
   char timebuf[26];
-  errno_t err;
+
+  errno_t err;//エラー
 
   // Get time as 64-bit integer.
   _time64(&long_time);
   // Convert to local time.
   err = _localtime64_s(&newtime, &long_time);
+
   if(err){
     printf("Invalid argument to _localtime64_s.");
     exit(1);
   }
-  if(newtime.tm_hour>12)        // Set up extension. 
-    strcpy_s(am_pm, sizeof(am_pm), "PM");
-  if(newtime.tm_hour>12)        // Convert from 24-hour 
-    newtime.tm_hour -= 12;    // to 12-hour clock. 
-  if(newtime.tm_hour==0)        // Set hour to 12 if midnight.
+
+  if(newtime.tm_hour==0){
+    // Set hour to 12 if midnight.
     newtime.tm_hour = 12;
+  }
+  else{
+    if(newtime.tm_hour>12){
+      // Set up extension. 
+      strcpy_s(am_pm, sizeof(am_pm), "PM");
+    }
+    else{// if(newtime.tm_hour>12){
+      // Convert from 24-hour 
+      newtime.tm_hour -= 12;    // to 12-hour clock. 
+    }
+  }
 
   // Convert to an ASCII representation. 
   err = asctime_s(timebuf, 26, &newtime);
-  if(err)
-  {
+  if(err){
     printf("Invalid argument to asctime_s.");
     exit(1);
   }
 
-  printf("char timebuf[26]=[%.19s]\nchar am_pm[3]=[%s]\n", timebuf, am_pm);
+  printf("timebuf[%.19s] am_pm[%s]\n", timebuf, am_pm);
 }
