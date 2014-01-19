@@ -1,9 +1,7 @@
 #pragma once
-class TEST01{
-public:
-  TEST01();
-  ~TEST01();
-  void OutputFile();
-  void InputFile();
-};
 
+
+int GetRandom(int, int );
+void test01();
+void test00();
+void GetTimes();

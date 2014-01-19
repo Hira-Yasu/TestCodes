@@ -1,8 +1,8 @@
 #include "TEST01.h"
 #include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-#include <iostream>
+#include <time.h>//time
+#include <stdlib.h>//string
+#include <iostream>//cout
 
 using namespace std;
 
@@ -14,9 +14,43 @@ int GetRandom(int min, int max){
   }
   return min+(int)(rand()*(max-min+1.0)/(1.0+RAND_MAX));
 }
+/*
+Mode  動作                    ファイルがあるとき         ファイルがないとき
+"r"   読み出し専用            正常                       エラー（NULL返却）
+"r+"  読み込みと書き込み      正常                       エラー（NULL返却）
+"w"   書き込み専用            サイズを0にする（上書き）	 新規作成
+"w+"  書き込みと読み込み      サイズを0にする（上書き）	 新規作成
+"a"   追加書き込み専用        最後に追加する             新規作成
+"a+"  読み込みと追加書き込み  最後に追加する           	 新規作成
+
+0x21(0x20) ~ 0x7E(0x7F) ACKIIのテキスト表示される文字
+
+int fseek( FILE *stream, long offset, int whence );
+バイナリモードとテキストモードで処理が違うらしいので注意
+int wherece に入る基準位置
+SEEK_SET	ファイルの始め
+SEEK_CUR	その時点のファイル位置表示子の値
+SEEK_END	ファイルの終わり
+
+ファイル位置表示子の値を返す、そのまま fseek() に入れることができる。
+long ftell( FILE *stream );
+
+int i;
+fwrite(&i, sizeof(int), 1, fp);
+fread(&i, sizeof(int), 1, fp);
+fprintf_s(fp, "output test\n");
+*/
+void test01(){
+  FILE *fpa;
+  fopen_s(&fpa, "TestFile//String00.txt", "w");
+  string str("abcdef");
+  fprintf_s(fpa, "%s", str);
+
+  fclose(fpa);
+}
 
 void test00(){
- FILE* fpa;
+  FILE* fpa;
   FILE* fpb;
   fopen_s(&fpa, "TestFile//Binary0.txt", "wb");
   fopen_s(&fpb, "TestFile//Binary1.txt", "wb");
@@ -47,48 +81,43 @@ void test00(){
   fclose(fpa);
   fclose(fpb);
 }
-void test01(){
-  FILE *fpa;
-  fopen_s(&fpa, "TestFile//String00.txt", "w");
-  string str("abcdef");
-  fprintf_s(fpa, "%s", str);
 
-  fclose(fpa);
+void GetTimes(){
+
+  //MicrosoftDNからコピペ
+
+  struct tm newtime;
+  __time64_t long_time;
+
+  char am_pm[] = "AM";
+  char timebuf[26];
+
+  errno_t err;//エラー
+
+  // Get time as 64-bit integer.
+  _time64(&long_time);
+  // Convert to local time.
+  //err = _localtime64_s(&newtime, &long_time);//タイムゾーン
+  if(err = _localtime64_s(&newtime, &long_time)){
+    printf("Invalid argument to _localtime64_s.");
+    exit(1);
+  }
+
+  if(newtime.tm_hour==0)// Set hour to 12 if midnight.
+    newtime.tm_hour = 12;
+  else{
+    if(newtime.tm_hour>12)
+      strcpy_s(am_pm, sizeof(am_pm), "PM");// Set up extension.
+    else// if(newtime.tm_hour>12){// Convert from 24-hour
+      newtime.tm_hour -= 12;// to 12-hour clock.
+  }
+
+  //asctime_s() Convert to an ASCII representation. 
+  //err = asctime_s(timebuf, 26, &newtime);
+  if(err = asctime_s(timebuf, 26, &newtime)){
+    printf("Invalid argument to asctime_s.");
+    exit(1);
+  }
+
+  printf("timebuf[%.19s] am_pm[%s]\n", timebuf, am_pm);
 }
-
-TEST01::TEST01(){}
-TEST01::~TEST01(){}
-void TEST01::OutputFile(){
-  /*
-  Mode  動作                    ファイルがあるとき         ファイルがないとき
-
-  "r"   読み出し専用            正常                       エラー（NULL返却）
-  "r+"  読み込みと書き込み      正常                       エラー（NULL返却）
-
-  "w"   書き込み専用            サイズを0にする（上書き）	 新規作成
-  "w+"  書き込みと読み込み      サイズを0にする（上書き）	 新規作成
-
-  "a"   追加書き込み専用        最後に追加する             新規作成
-  "a+"  読み込みと追加書き込み  最後に追加する           	 新規作成
-
-  0x21(0x20) ~ 0x7E(0x7F) ACKIIのテキスト表示される文字
-
-  int fseek( FILE *stream, long offset, int whence );
-  バイナリモードとテキストモードで処理が違うらしいので注意
-  int wherece に入る基準位置
-  SEEK_SET	ファイルの始め
-  SEEK_CUR	その時点のファイル位置表示子の値
-  SEEK_END	ファイルの終わり
-
-  ファイル位置表示子の値を返す、そのまま fseek() に入れることができる。
-  long ftell( FILE *stream );
-
-  int i;
-  fwrite(&i, sizeof(int), 1, fp);
-  fread(&i, sizeof(int), 1, fp);
-  fprintf_s(fp, "output test\n");
-  */
- test01();
-
-}
-void TEST01::InputFile(){}
