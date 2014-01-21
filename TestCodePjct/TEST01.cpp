@@ -40,11 +40,31 @@ fwrite(&i, sizeof(int), 1, fp);
 fread(&i, sizeof(int), 1, fp);
 fprintf_s(fp, "output test\n");
 */
+void test03(){
+  //ここで試しにエディタを作る。
+  //テキストの抽出や書き込み、暗号化等等
+}
+void test02(){
+  FILE *fs;
+  fopen_s(&fs, "TestFile//map.dat", "wb");
+
+  char c = 0;
+  for(int i=0; i<256*256; i++){
+    c = (char)GetRandom(0x00, 0xFF);
+    fwrite(&c, sizeof(c), 1, fs);
+  }
+  fclose(fs);
+
+  //65536byteのランダムバイナリファイルの書き出し
+}
+
 void test01(){
   FILE *fpa;
   fopen_s(&fpa, "TestFile//String00.txt", "w");
-  string str("abcdef");
-  fprintf_s(fpa, "%s", str);
+  char c[4];
+  //c[0] = 0xFF;
+  c[0] = c[1] = c[2] = c[3] = 0;
+  fprintf_s(fpa, "%c\n", c[0]);
 
   fclose(fpa);
 }
