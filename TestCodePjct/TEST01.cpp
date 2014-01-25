@@ -41,6 +41,9 @@ fread(&i, sizeof(int), 1, fp);
 fprintf_s(fp, "output test\n");
 */
 void test03(){
+
+  cout << "test" << endl;
+
   //ここで試しにエディタを作る。
   //テキストの抽出や書き込み、暗号化等等
 }
