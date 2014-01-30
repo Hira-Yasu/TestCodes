@@ -8,12 +8,13 @@ using namespace std;
 
 int GetRandom(int min, int max){
   static int flag;
-  if(flag==0) {
+  if(flag==0) {//[]
     srand((unsigned int)time(NULL));
     flag = 1;
   }
   return min+(int)(rand()*(max-min+1.0)/(1.0+RAND_MAX));
 }
+
 /*
 Mode  動作                    ファイルがあるとき         ファイルがないとき
 "r"   読み出し専用            正常                       エラー（NULL返却）
@@ -40,6 +41,17 @@ fwrite(&i, sizeof(int), 1, fp);
 fread(&i, sizeof(int), 1, fp);
 fprintf_s(fp, "output test\n");
 */
+
+void test04(char *c){
+
+  FILE *fs;
+  fopen_s(&fs, c, "w");
+
+  fprintf_s(fs, "test04\n");
+
+  fclose(fs);
+
+}
 void test03(){
 
   cout << "test" << endl;
