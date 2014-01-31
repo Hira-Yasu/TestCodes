@@ -42,6 +42,7 @@ fread(&i, sizeof(int), 1, fp);
 fprintf_s(fp, "output test\n");
 */
 
+void test05(){}
 void test04(char *c){
 
   FILE *fs;
@@ -53,8 +54,15 @@ void test04(char *c){
 
 }
 void test03(){
+  cout << "test03" << endl;
 
-  cout << "test" << endl;
+  char m1[3][4] = {"abc", "def", "ghi"};
+  printf("%s %s %s\n", m1[0], m1[1], m1[2]);
+  printf("%d\n", sizeof(m1));
+  char* m2 = "abcdefghijkl";
+  printf("%s\n", m2);
+  printf("%d\n", sizeof(m2));//char*が指す4byte?
+  //fread(&i, sizeof(int), 1, fp);
 
   //ここで試しにエディタを作る。
   //テキストの抽出や書き込み、暗号化等等

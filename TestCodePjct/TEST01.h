@@ -2,6 +2,7 @@
 
 
 int GetRandom(int, int );
+void test05();
 void test04(char* c);
 void test03();
 void test02();
