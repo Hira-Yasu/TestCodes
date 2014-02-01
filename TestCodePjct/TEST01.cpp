@@ -42,26 +42,82 @@ fread(&i, sizeof(int), 1, fp);
 fprintf_s(fp, "output test\n");
 */
 
+void GetTime(char* c){
+  struct tm newtime;
+  __time64_t long_time;
+  char am_pm[] = "AM";
+  char timebuf[26];
+  //errno_t err;
+
+  _time64(&long_time);
+  _localtime64_s(&newtime, &long_time);
+
+  if(newtime.tm_hour==0)
+    newtime.tm_hour = 12;
+  else{
+    if(newtime.tm_hour>12)
+      strcpy_s(am_pm, sizeof(am_pm), "PM");
+    else
+      newtime.tm_hour -= 12;
+  }
+
+  asctime_s(timebuf, 26, &newtime);
+
+  FILE *fp;
+  fopen_s(&fp, c, "r+");
+
+  fprintf_s(fp, "%.19s %s\n", timebuf, am_pm);
+
+  fclose(fp);
+}
+bool CheckError(errno_t err, char* c){
+  if(NULL==err)return NULL;//エラー無し
+  //else
+  cout<<"Error"<<endl;
+  cout<<"ファイル\" "<< c <<" \"が存在しません。"<<endl;
+  cout <<"ErrorCode " << err << endl;
+
+  FILE* fs;
+  char* err_c = "error_log.txt";
+  fopen_s(&fs, err_c, "r+");//r+専用、エラーが出たらwで生成してwhileループで戻す？
+  fseek( fs, 0, SEEK_SET );//ファイルの最初にセット、新しいものほど上に
+
+  fprintf_s(fs, "%s\n", c);
+
+  fclose(fs);
+
+  return true;
+}
+
 void test05(){}
-void test04(char *c){
+void test04(){
 
   FILE *fs;
-  fopen_s(&fs, c, "w");
+  char* c = "TestFile//test04.txt";
+  errno_t err = fopen_s(&fs, c, "w");//<-
 
-  fprintf_s(fs, "test04\n");
+  if(CheckError(err, c))return;
+  //エラーチェック、
+  //r フォルダが存在しないとき、ファイルが存在しないときエラー
+  //↑のこの2つのエラーが同じなんだよなぁ……
+  //w フォルダが存在しないときのみエラー、ファイルはなくても生成する
+  //a フォルダが存在しないときのみエラー、ファイルはなくても生成する
+
+  
+  fprintf_s(fs, "test05\n");//rの時は無視
 
   fclose(fs);
 
 }
 void test03(){
-  cout << "test03" << endl;
+  cout<<"test03"<<endl;
 
   char m1[3][4] = {"abc", "def", "ghi"};
   printf("%s %s %s\n", m1[0], m1[1], m1[2]);
   printf("%d\n", sizeof(m1));
   char* m2 = "abcdefghijkl";
   printf("%s\n", m2);
-  printf("%d\n", sizeof(m2));//char*が指す4byte?
+  printf("%d\n", sizeof(m2));//char*が指すアドレス4byte
   //fread(&i, sizeof(int), 1, fp);
 
   //ここで試しにエディタを作る。
@@ -72,7 +128,7 @@ void test02(){
   fopen_s(&fs, "TestFile//map.dat", "wb");
 
   char c = 0;
-  for(int i=0; i<256*256; i++){
+  for(int i = 0; i<256*256; i++){
     c = (char)GetRandom(0x00, 0xFF);
     fwrite(&c, sizeof(c), 1, fs);
   }
@@ -80,7 +136,6 @@ void test02(){
 
   //65536byteのランダムバイナリファイルの書き出し
 }
-
 void test01(){
   FILE *fpa;
   fopen_s(&fpa, "TestFile//String00.txt", "w");
@@ -91,7 +146,6 @@ void test01(){
 
   fclose(fpa);
 }
-
 void test00(){
   FILE* fpa;
   FILE* fpb;
