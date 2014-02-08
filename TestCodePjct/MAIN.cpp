@@ -6,7 +6,7 @@ using namespace std;
 int main() {
   cout<<"Hello World"<<endl;
 
-  test04();
+  test05();
 
   cout<<"Press Any Key"<<flush;
   getchar();

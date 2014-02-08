@@ -8,11 +8,11 @@ using namespace std;
 
 int GetRandom(int min, int max){
   static int flag;
-  if(flag==0) {//[]
+  if(flag == 0) {//[]
     srand((unsigned int)time(NULL));
     flag = 1;
   }
-  return min+(int)(rand()*(max-min+1.0)/(1.0+RAND_MAX));
+  return min + (int)(rand()*(max - min + 1.0) / (1.0 + RAND_MAX));
 }
 
 /*
@@ -52,10 +52,10 @@ void GetTime(char* c){
   _time64(&long_time);
   _localtime64_s(&newtime, &long_time);
 
-  if(newtime.tm_hour==0)
+  if(newtime.tm_hour == 0)
     newtime.tm_hour = 12;
   else{
-    if(newtime.tm_hour>12)
+    if(newtime.tm_hour > 12)
       strcpy_s(am_pm, sizeof(am_pm), "PM");
     else
       newtime.tm_hour -= 12;
@@ -71,16 +71,16 @@ void GetTime(char* c){
   fclose(fp);
 }
 bool CheckError(errno_t err, char* c){
-  if(NULL==err)return NULL;//エラー無し
+  if(NULL == err)return NULL;//エラー無し
   //else
-  cout<<"Error"<<endl;
-  cout<<"ファイル\" "<< c <<" \"が存在しません。"<<endl;
-  cout <<"ErrorCode " << err << endl;
+  cout << "Error" << endl;
+  cout << "ファイル\" " << c << " \"が存在しません。" << endl;
+  cout << "ErrorCode " << err << endl;
 
   FILE* fs;
   char* err_c = "error_log.txt";
   fopen_s(&fs, err_c, "r+");//r+専用、エラーが出たらwで生成してwhileループで戻す？
-  fseek( fs, 0, SEEK_SET );//ファイルの最初にセット、新しいものほど上に
+  fseek(fs, 0, SEEK_SET);//ファイルの最初にセット、新しいものほど上に
 
   fprintf_s(fs, "%s\n", c);
 
@@ -89,7 +89,23 @@ bool CheckError(errno_t err, char* c){
   return true;
 }
 
-void test05(){}
+void test05(){
+
+  bool a, b;
+  a = 0;
+  b = 1;
+
+  for(int i = 0; i < 8; i++){
+    if(4 <= i)a = b;
+    if(a == b){
+      cout << "true " << flush;
+    }
+    else if(a != b){
+      cout << "false " << flush;
+    }
+    cout << "Disp" << endl;
+  }
+}
 void test04(){
 
   FILE *fs;
@@ -103,14 +119,14 @@ void test04(){
   //w フォルダが存在しないときのみエラー、ファイルはなくても生成する
   //a フォルダが存在しないときのみエラー、ファイルはなくても生成する
 
-  
+
   fprintf_s(fs, "test05\n");//rの時は無視
 
   fclose(fs);
 
 }
 void test03(){
-  cout<<"test03"<<endl;
+  cout << "test03" << endl;
 
   char m1[3][4] = {"abc", "def", "ghi"};
   printf("%s %s %s\n", m1[0], m1[1], m1[2]);
@@ -128,7 +144,7 @@ void test02(){
   fopen_s(&fs, "TestFile//map.dat", "wb");
 
   char c = 0;
-  for(int i = 0; i<256*256; i++){
+  for(int i = 0; i < 256 * 256; i++){
     c = (char)GetRandom(0x00, 0xFF);
     fwrite(&c, sizeof(c), 1, fs);
   }
@@ -156,7 +172,7 @@ void test00(){
 
   char c = 0;
   int j;
-  for(int i = 0; i<256; i++){
+  for(int i = 0; i < 256; i++){
     j = GetRandom(0x00, 0xFF);
     c = (char)j;
     fwrite(&c, 1, 1, fpa);
@@ -200,10 +216,10 @@ void GetTimes(){
     exit(1);
   }
 
-  if(newtime.tm_hour==0)// Set hour to 12 if midnight.
+  if(newtime.tm_hour == 0)// Set hour to 12 if midnight.
     newtime.tm_hour = 12;
   else{
-    if(newtime.tm_hour>12)
+    if(newtime.tm_hour > 12)
       strcpy_s(am_pm, sizeof(am_pm), "PM");// Set up extension.
     else// if(newtime.tm_hour>12){// Convert from 24-hour
       newtime.tm_hour -= 12;// to 12-hour clock.
