@@ -64,7 +64,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MAIN.h" />
     <ClInclude Include="TEST.h" />
   </ItemGroup>
   <ItemGroup>
