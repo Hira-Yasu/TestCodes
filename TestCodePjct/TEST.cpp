@@ -28,13 +28,17 @@ Mode  動作                    ファイルがあるとき         ファイルがないとき
 
 int fseek( FILE *stream, long offset, int whence );
 バイナリモードとテキストモードで処理が違うらしいので注意
+
+long offset に入る基準位置
+//ファイル位置表示子の値を返す、そのまま fseek() に入れることができる。
+long ftell( FILE *stream );
+
 int wherece に入る基準位置
 SEEK_SET	ファイルの始め
 SEEK_CUR	その時点のファイル位置表示子の値
 SEEK_END	ファイルの終わり
 
-ファイル位置表示子の値を返す、そのまま fseek() に入れることができる。
-long ftell( FILE *stream );
+
 
 int i;
 fwrite(&i, sizeof(int), 1, fp);
