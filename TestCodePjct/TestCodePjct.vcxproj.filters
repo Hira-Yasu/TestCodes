@@ -18,7 +18,7 @@
     <ClInclude Include="MAIN.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TEST01.h">
+    <ClInclude Include="TEST.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,7 +26,7 @@
     <ClCompile Include="MAIN.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TEST01.cpp">
+    <ClCompile Include="TEST.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

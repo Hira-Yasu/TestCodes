@@ -1,4 +1,4 @@
-#include "TEST01.h"
+#include "TEST.h"
 #include <stdio.h>
 #include <time.h>//time
 #include <stdlib.h>//string
@@ -100,7 +100,7 @@ void test05(){
     if(a == b){
       cout << "true " << flush;
     }
-    else if(a != b){
+    else{//if(a != b)
       cout << "false " << flush;
     }
     cout << "Disp" << endl;
