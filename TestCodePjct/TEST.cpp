@@ -21,7 +21,7 @@ template <class X>X GetRandom(X min, X max){
     srand((unsigned int)time(NULL));
     flag = true;
   }
-  return (X)min + (rand()*(max - min + 1.0) / (1.0 + RAND_MAX));
+  return min + (X)(rand()*(max - min + 1.0) / (1.0 + RAND_MAX));
 }
 void GetTimes(){
   //MicrosoftDNからコピペ
@@ -56,10 +56,8 @@ void WriteTime(char* c){
   char am_pm[] = "AM";
   char timebuf[26];
   //errno_t err;
-
   _time64(&long_time);
   _localtime64_s(&newtime, &long_time);
-
   if(newtime.tm_hour == 0)
     newtime.tm_hour = 12;
   else{
@@ -68,14 +66,10 @@ void WriteTime(char* c){
     else
       newtime.tm_hour -= 12;
   }
-
   asctime_s(timebuf, 26, &newtime);
-
   FILE *fp;
   fopen_s(&fp, c, "r+");
-
   fprintf_s(fp, "%.19s %s\n", timebuf, am_pm);
-
   fclose(fp);
 }
 bool CheckError(errno_t err, char* c){
@@ -127,39 +121,55 @@ fprintf_s(fp, "output test\n");
 */
 
 void test05(){
+  bool fade = false;
   bool a, b;
-  a = 0; b = 1;
+  a = true;
+  b = false;
+  int fadecount = 0;
 
-  for(int i = 0; i < 8; i++){
-    if(4 <= i)a = b;
-    if(a == b){
-      cout << "true " << flush;
+  for(int i = 0; i < 12; i++){
+
+    if(a != b){//^
+      cout << "[a!b]" << flush;
+      if(!fade)fade = true;
     }
-    else{//if(a != b)
-      cout << "false " << flush;
+    else cout << "[a=b]" << flush;
+
+
+    if(fade){
+      cout << "[fade]" << flush;
+      fadecount++;
+
+      //フェードアウトが完了した時点でシステムを推移させる
+      if(fadecount == 4)a = b;
+
+      //フェードインが完了したらフェードフラグを解除
+      else if(fadecount == 8){
+        fade = false;
+        fadecount = 0;
+      }
+
     }
-    cout << "Disp" << endl;
+    else cout << "[Update]" << flush;
+
+    cout << "[Disp]" << endl;
   }
 }
 void test04(){
-
   FILE *fs;
   char* c = "TestFile//test04.txt";
   errno_t err = fopen_s(&fs, c, "w");//<-
-
   if(CheckError(err, c))return;
   //エラーチェック、
   //r フォルダが存在しないとき、ファイルが存在しないときエラー
   //↑のこの2つのエラーが同じなんだよなぁ……
   //w フォルダが存在しないときのみエラー、ファイルはなくても生成する
   //a フォルダが存在しないときのみエラー、ファイルはなくても生成する
-
   fprintf_s(fs, "test05\n");//rの時は無視
   fclose(fs);
 }
 void test03(){
   cout << "test03" << endl;
-
   char m1[3][4] = {"abc", "def", "ghi"};
   printf("%s %s %s\n", m1[0], m1[1], m1[2]);
   printf("%d\n", sizeof(m1));
