@@ -8,9 +8,15 @@ void GetTimes();
 void WriteTime();
 bool CheckError(errno_t, char*);
 
+//threadのテスト
+void test07();
+//test05を製作中のに合わせたコード
+void test06();
+//状態推移のプロトタイプ
 void test05();
 void test04();
 void test03();
+//65536byteのランダムバイナリファイルの書き出し
 void test02();
 void test01();
 void test00();

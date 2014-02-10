@@ -3,6 +3,7 @@
 #include <time.h>//time
 #include <stdlib.h>//string
 #include <iostream>//cout
+#include <thread>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ using namespace std;
 template <class X>X func(X x, X bottom, X top){
   return max(bottom, min(top, x));
 }
-//ポインタに直接値を代入する形式
+//ポインタに直接値を代入する形式（オーバーロード
 template <class X>X func(X* x, X bottom, X top){
   *x = max(bottom, min(top, *x));
 }
@@ -21,7 +22,7 @@ template <class X>X GetRandom(X min, X max){
     srand((unsigned int)time(NULL));
     flag = true;
   }
-  return min + (X)(rand()*(max - min + 1.0) / (1.0 + RAND_MAX));
+  return (X)min + (X)(rand()*(max - min + 1.0) / (1.0 + RAND_MAX));
 }
 void GetTimes(){
   //MicrosoftDNからコピペ
@@ -120,6 +121,59 @@ fread(&i, sizeof(int), 1, fp);
 fprintf_s(fp, "output test\n");
 */
 
+
+void threadA(){
+  for(int i = 0; i < 16; i++){
+    cout << "A" << endl;
+  }
+}
+void threadB(){
+  for(int i = 0; i < 16; i++){
+    cout << "B" << endl;
+  }
+}
+void test07(){
+  thread th1(threadA);
+  thread th2(threadB);
+  th1.join();
+  th2.join();
+}
+void test06(){
+  bool fade = false;
+  bool a, b;
+  a = true;
+  b = false;
+  int fadecount = 0;
+
+  for(int i = 0; i < 12; i++){//ループ
+
+
+    if(a != b){
+      cout << "[a!b]" << flush;
+      if(!fade){
+        fade = true;
+      }
+    }
+    else cout << "[a=b]" << flush;
+
+    //fadeがtrueになった時点でUpdateは実行させないためUpdateはここに置く
+    if(!fade){
+      cout << "[Update]" << flush;
+    }
+    else cout << "[fade]" << flush;
+
+    cout << "[Disp]" << endl;
+
+    if(fade){//フェード処理
+      fadecount++;
+      if(fadecount == 4)a = b;
+      else if(fadecount == 8){
+        fade = false;
+        fadecount = 0;
+      }
+    }
+  }
+}
 void test05(){
   bool fade = false;
   bool a, b;
@@ -130,11 +184,16 @@ void test05(){
   for(int i = 0; i < 12; i++){
 
     if(a != b){//^
-      cout << "[a!b]" << flush;
+      //cout << "[a!b]" << flush;
       if(!fade)fade = true;
     }
-    else cout << "[a=b]" << flush;
+    //else cout << "[a=b]" << flush;
 
+    if(!fade){
+      cout << "[Update]" << flush;
+    }
+
+    cout << "[Disp]" << endl;
 
     if(fade){
       cout << "[fade]" << flush;
@@ -148,11 +207,7 @@ void test05(){
         fade = false;
         fadecount = 0;
       }
-
     }
-    else cout << "[Update]" << flush;
-
-    cout << "[Disp]" << endl;
   }
 }
 void test04(){
@@ -181,7 +236,7 @@ void test02(){
   FILE *fs;
   fopen_s(&fs, "TestFile//test02.txt", "wb");
   char c = 0;
-  for(int i = 0; i < 256 * 256; i++){//65536byteのランダムバイナリファイルの書き出し
+  for(int i = 0; i < 256 * 256; i++){
     c = GetRandom(0x00, 0xFF);
     fwrite(&c, sizeof(c), 1, fs);
   }
