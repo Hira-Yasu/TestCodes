@@ -121,14 +121,84 @@ fread(&i, sizeof(int), 1, fp);
 fprintf_s(fp, "output test\n");
 */
 
+void test09(){
+  const int max = 64;
+  bool a[max];
+  int c = 0;
+  for(int i = 0; i < max; i++){
+    a[i] = (bool)(GetRandom(0, 1) % 2);
+    cout << a[i] << flush;
+  }
+  cout << " Initial" << endl;
+
+  for(int i = 0; i < max - 1; i++)
+  {
+    if(0 == a[i]){
+      for(int j = i; j < 64; j++){
+        if(1 == a[j]){
+          a[i] = a[i] ^ true;
+          a[j] = a[j] ^ true;
+          for(int j = 0; j < max; j++){ cout << a[j] << flush; }
+          //最後に入れ替えた個数(i)が要素数になる
+          //cは入れ替えた回数
+          cout << ' ' << i << ' ' << ++c << endl;
+          break;
+        }
+
+      }
+    }
+  }
+  cout << "バブル sort end" << endl;
+}
+
+void test08(){
+  const int max = 64;
+  bool a[max];
+  int c = 0;
+  int z = 0;
+  for(int i = 0; i < max; i++){
+    a[i] = (bool)(GetRandom(0, 1) % 2);
+    cout << a[i] << flush;
+  }
+  cout << " Initial" << endl;
+
+
+  for(int i = 0; i < max; i++)  //max-1でも計算可能、だが要素数が変わる
+  {
+    if(1 == a[i])z++;//要素数
+    else
+    {//if(0 == a[i]){
+      for(int j = max - 1; j > i; j--)
+      {
+        if(1 == a[j])
+        {
+
+          z++;//要素数
+          c++;//計算回数
+
+          a[i] = a[i] ^ true;
+          a[j] = a[j] ^ true;
+
+          for(int j = 0; j < max; j++){ cout << a[j] << flush; }
+          cout << ' ' << endl;
+
+          break;
+        }
+      }
+    }
+  }
+  cout << "member=" << z << ' ' << "count=" << c << " 交互バブル " << endl;
+  cout << "sort end" << endl;
+
+}
 
 void threadA(){
-  for(int i = 0; i < 16; i++){
+  for(int i = 0; i < 4; i++){
     cout << "A" << endl;
   }
 }
 void threadB(){
-  for(int i = 0; i < 16; i++){
+  for(int i = 0; i < 4; i++){
     cout << "B" << endl;
   }
 }
@@ -137,6 +207,10 @@ void test07(){
   thread th2(threadB);
   th1.join();
   th2.join();
+
+  unsigned int i = thread::hardware_concurrency();
+  cout << i << endl;
+
 }
 void test06(){
   bool fade = false;

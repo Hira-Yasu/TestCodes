@@ -8,6 +8,10 @@ void GetTimes();
 void WriteTime();
 bool CheckError(errno_t, char*);
 
+//交互探索
+void test09();
+//バブル
+void test08();
 //threadのテスト
 void test07();
 //test05を製作中のに合わせたコード
